@@ -54,17 +54,35 @@ def load_model():
 # =========================
 # PREDICT ONE IMAGE
 # =========================
+# def predict_image(model, image_path):
+#     image = Image.open(image_path)
+#     w, h = image.size
+#     new_h = round(h * 32 / w)
+
+#     image = image.resize(
+#         (32, new_h),
+#         Image.Resampling.BILINEAR
+#     )
+#     image.convert("RGB")
+
+#     image = transform(image).unsqueeze(0).to(DEVICE)
+
+#     with torch.no_grad():
+#         outputs = model(image)
+#         probabilities = torch.softmax(outputs, dim=1)
+#         confidence, predicted_class = torch.max(probabilities, 1)
+
+#     label = CLASS_NAMES[predicted_class.item()]
+#     confidence = round(confidence.item() * 100, 2)
+
+#     return {
+#         "prediction": label,
+#         "confidence": confidence
+#     }
+
+
 def predict_image(model, image_path):
-    image = Image.open(image_path)
-    w, h = image.size
-    new_h = round(h * 32 / w)
-
-    image = image.resize(
-        (32, new_h),
-        Image.Resampling.BILINEAR
-    )
-    image.convert("RGB")
-
+    image = Image.open(image_path).convert("RGB")
     image = transform(image).unsqueeze(0).to(DEVICE)
 
     with torch.no_grad():
@@ -79,21 +97,3 @@ def predict_image(model, image_path):
         "prediction": label,
         "confidence": confidence
     }
-
-
-    # def predict_image(model, image_path):
-    # image = Image.open(image_path).convert("RGB")
-    # image = transform(image).unsqueeze(0).to(DEVICE)
-
-    # with torch.no_grad():
-    #     outputs = model(image)
-    #     probabilities = torch.softmax(outputs, dim=1)
-    #     confidence, predicted_class = torch.max(probabilities, 1)
-
-    # label = CLASS_NAMES[predicted_class.item()]
-    # confidence = round(confidence.item() * 100, 2)
-
-    # return {
-    #     "prediction": label,
-    #     "confidence": confidence
-    # }
